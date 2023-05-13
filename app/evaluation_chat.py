@@ -14,8 +14,7 @@ assignment_template = """Please evaluate student assignment according to criteri
 assignment_human: HumanMessagePromptTemplate = HumanMessagePromptTemplate.from_template(assignment_template)
 
 
-def setup_chat(input_text: List[str], criteria_text: str):
-    assignment = "\n\n".join(input_text)
+def setup_chat():
     prompt = ChatPromptTemplate.from_messages([
         SystemMessage(
             content="You are AI assistant teacher, that evaluates student assignments according to criteria"),
