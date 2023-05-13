@@ -1,33 +1,32 @@
 """Callback Handler streams to file on new llm token."""
 import sys
-from typing import Any, Dict, List, Union, Callable
+from typing import Any, Dict, List, Union
 
 from langchain.callbacks.base import BaseCallbackHandler
 from langchain.schema import AgentAction, AgentFinish, LLMResult
+from streamlit.delta_generator import DeltaGenerator
 
 
-class StreamingFileCallbackHandler(BaseCallbackHandler):
+class StreamingWidgetCallbackHandler(BaseCallbackHandler):
     """Callback handler for streaming. Only works with LLMs that support streaming."""
 
-    def __init__(self, filename: str, on_finish: Callable[[str], None]):
-        self.file = open(filename, "w")
-        self.filename = filename
-        self.on_finish = on_finish
+    def __init__(self, widget: DeltaGenerator):
+        self.widget = widget
+        self.text = ""
 
     def on_llm_start(
         self, serialized: Dict[str, Any], prompts: List[str], **kwargs: Any
     ) -> None:
         """Run when LLM starts running."""
+        self.text = ""
 
     def on_llm_new_token(self, token: str, **kwargs: Any) -> None:
         """Run on new LLM token. Only available when streaming is enabled."""
-        self.file.write(token)
-        self.file.flush()
+        self.text += token
+        self.widget.markdown(self.text)
 
     def on_llm_end(self, response: LLMResult, **kwargs: Any) -> None:
         """Run when LLM ends running."""
-        self.file.close()
-        self.on_finish(self.filename)
 
     def on_llm_error(
         self, error: Union[Exception, KeyboardInterrupt], **kwargs: Any
