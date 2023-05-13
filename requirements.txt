@@ -1,0 +1,9 @@
+langchain
+openai
+pypdf
+markdown
+nltk
+unstructured
+pdf2image
+pytesseract
+streamlit
