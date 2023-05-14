@@ -9,7 +9,7 @@ Format the output as markdown.
     {criteria}
     
     Rest is the student submission:
-    {assignment}
+    {submission}
 """
 
 assignment_human: HumanMessagePromptTemplate = HumanMessagePromptTemplate.from_template(assignment_template)
