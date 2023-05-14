@@ -1,9 +1,6 @@
 langchain
 openai
-pypdf
-markdown
-nltk
 unstructured[local-inference]
-pdf2image
-pytesseract
 streamlit
+tabulate
+pypandoc

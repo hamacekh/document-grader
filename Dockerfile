@@ -1,22 +1,19 @@
-# Use a recent Ubuntu version as the base image
+# Use ubuntu:jammy as the base image
 FROM ubuntu:jammy
 
-# Install necessary dependencies
+# Copy packages.txt and requirements.txt to the docker image
+COPY packages.txt .
+
+# Update, upgrade, and install packages from packages.txt and pip requirements from requirements.txt
+# Then clean up APT when done to reduce image size
 RUN apt-get update && \
-    apt-get install -y \
-    pdf2htmlex
+    apt-get install -y python3 python3-pip git && \
+    apt-get install -y $(cat packages.txt) && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Set the working directory to /app
-WORKDIR /app
+RUN pip3 install --upgrade pip
 
-# Copy the requirements.txt file into the container
 COPY requirements.txt .
 
-# Install the Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the app directory into the container
-COPY app/ ./app
-
-# Set the entrypoint to run your application
-ENTRYPOINT ["python", "app/main.py"]
+RUN pip3 install --no-cache-dir -r requirements.txt

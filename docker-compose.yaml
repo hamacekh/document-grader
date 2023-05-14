@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  myapp:
+    image: document-grader:latest
+    volumes:
+      - ./app:/app
+      - ~/.streamlit/secrets.toml:/root/.streamlit/secrets.toml
+    working_dir: /app
+    command: streamlit run main.py --server.port 8502
+    ports:
+      - 8502:8502
